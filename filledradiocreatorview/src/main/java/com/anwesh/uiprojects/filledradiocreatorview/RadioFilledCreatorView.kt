@@ -216,4 +216,13 @@ class RadioFilledCreatorView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : RadioFilledCreatorView {
+            val view : RadioFilledCreatorView = RadioFilledCreatorView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
