@@ -193,4 +193,27 @@ class RadioFilledCreatorView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : RadioFilledCreatorView) {
+
+        private val animator : Animator = Animator(view)
+        private val rfc : RadioFilledCreator = RadioFilledCreator(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            rfc.draw(canvas, paint)
+            animator.animate {
+                rfc.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            rfc.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
