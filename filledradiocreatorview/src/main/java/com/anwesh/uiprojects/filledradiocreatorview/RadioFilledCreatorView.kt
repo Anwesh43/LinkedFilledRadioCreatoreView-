@@ -27,8 +27,42 @@ val sizeFactor : Float = 4.8f
 val concFactor : Float = 7.2f
 val delay : Long = 20
 val backColor : Int = Color.parseColor("#bdbdbd")
+val deg : Float = 180f
+val start : Float = -90f
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawRadioFilledCreator(scale : Float, w : Float, h : Float, paint : Paint) {
+    val sf : Float = scale.sinify()
+    val sf1 : Float = sf.divideScale(0, parts + 1)
+    val sf2 : Float = sf.divideScale(1, parts + 1)
+    val r : Float = Math.min(w, h) / sizeFactor
+    val concR : Float = Math.min(w, h) / concFactor
+    save()
+    translate(w / 2, h / 2)
+    paint.style = Paint.Style.STROKE
+    for (j in 0..1) {
+        save()
+        scale(1f - 2 * j, 1f)
+        drawArc(RectF(-r, -r, r, r), start, deg * sf1, false, paint)
+        restore()
+    }
+    paint.style = Paint.Style.FILL
+    drawCircle(0f, 0f, r * sf2, paint)
+    restore()
+}
+
+fun Canvas.drawRFCNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.color = colors[i]
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(w / 2, h / 2)
+    drawRadioFilledCreator(scale, w, h, paint)
+    restore()
+}
