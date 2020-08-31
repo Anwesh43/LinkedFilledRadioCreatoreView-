@@ -51,7 +51,7 @@ fun Canvas.drawRadioFilledCreator(scale : Float, w : Float, h : Float, paint : P
         restore()
     }
     paint.style = Paint.Style.FILL
-    drawCircle(0f, 0f, r * sf2, paint)
+    drawCircle(0f, 0f, concR * sf2, paint)
     restore()
 }
 
@@ -61,10 +61,7 @@ fun Canvas.drawRFCNode(i : Int, scale : Float, paint : Paint) {
     paint.color = colors[i]
     paint.strokeCap = Paint.Cap.ROUND
     paint.strokeWidth = Math.min(w, h) / strokeFactor
-    save()
-    translate(w / 2, h / 2)
     drawRadioFilledCreator(scale, w, h, paint)
-    restore()
 }
 
 class RadioFilledCreatorView(ctx : Context) : View(ctx) {
@@ -138,7 +135,7 @@ class RadioFilledCreatorView(ctx : Context) : View(ctx) {
         private var prev : RFCNode? = null
 
         init {
-
+            addNeighbor()
         }
 
         fun addNeighbor() {
